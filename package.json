@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "@nechlophomeriaa/ytdl": "^0.0.3",
+    "node-id3": "^0.2.6",
+    "spotify-finder": "^2.1.1",
+    "spottydl": "^0.2.2"
+  },
+  "name": "spotifydl",
+  "description": "Spotify Downloader with metadata using Node-ID3",
+  "version": "0.0.1",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thoriqazzikraa/spotifydl.git"
+  },
+  "keywords": [
+    "spotifydl",
+    "spotify",
+    "spotify-downloader",
+    "spotifydl-core"
+  ],
+  "author": "Thoriq Azzikra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thoriqazzikraa/spotifydl/issues"
+  },
+  "homepage": "https://github.com/thoriqazzikraa/spotifydl#readme"
+}
