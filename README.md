@@ -2,7 +2,7 @@
 `const { search, downloadTrack } = require("@nechlophomeriaa/spotifydl")`
 
 ## Search Function
-```
+```js
 (async () => {
 const searchTrack = await search(query)
 console.log(searchTrack)
@@ -11,7 +11,7 @@ console.log(searchTrack)
 ```
 
 ## Download Function
-```
+```js
 (async () => {
 const downTrack = await downloadTrack(song) // query || url
 console.log(downTrack)
