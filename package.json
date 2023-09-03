@@ -5,7 +5,7 @@
     "spotify-finder": "^2.1.1",
     "spottydl": "^0.2.2"
   },
-  "name": "spotifydl",
+  "name": "@nechlophomeriaa/spotifydl",
   "description": "Spotify Downloader with metadata using Node-ID3",
   "version": "0.0.1",
   "main": "index.js",
