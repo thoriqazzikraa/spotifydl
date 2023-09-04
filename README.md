@@ -4,10 +4,21 @@
 ## Search Function
 ```js
 (async () => {
-const searchTrack = await search(query)
+const searchTrack = await search(query, limit) //
 console.log(searchTrack)
 // Promise will be return an Array
 })
+
+/*
+Example: {
+
+(async () => {
+const searchTrack = await search("summer salt tidal waves", 5)
+console.log(searchTrack)
+})
+
+}
+*/
 ```
 
 ## Download Function

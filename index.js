@@ -11,9 +11,10 @@ const spotify = new spot({
 const { getTrack } = require("spottydl");
 const fetch = require("node-fetch");
 
-async function search(query) {
+async function search(query, limit) {
   if (isUrl(query)) throw new Error("search function not support for url");
-  const data = await spotify.search({ q: query, type: "track", limit: 10 });
+  const limits = limit ? limit : 1;
+  const data = await spotify.search({ q: query, type: "track", limit: limits });
   return data.tracks;
 }
 
@@ -60,7 +61,7 @@ async function downloadTrack(song) {
     }
   } else {
     try {
-      const findTracks = await search(song);
+      const findTracks = await search(song, 1);
       const getTrackInfo = await getTrack(
         findTracks.items[0].external_urls.spotify
       );
