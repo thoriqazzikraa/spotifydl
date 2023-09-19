@@ -1,13 +1,13 @@
 {
   "dependencies": {
-    "@nechlophomeriaa/ytdl": "^0.0.3",
+    "@nechlophomeriaa/ytdl": "^0.0.6",
     "node-id3": "^0.2.6",
     "spotify-finder": "^2.1.1",
     "spottydl": "^0.2.2"
   },
   "name": "@nechlophomeriaa/spotifydl",
   "description": "Spotify Downloader with metadata using Node-ID3",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
