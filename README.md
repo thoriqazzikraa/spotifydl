@@ -33,14 +33,10 @@ Example Output: {
 if url includes https://spotify.link:
 
 {
-  status: true,
-  title: 'So Long',
-  artists: 'Steady Holiday',
-  image: 'https://i.scdn.co/image/ab67616d0000b273d52195651e47f1b443e90429',
-  url: 'https://dl.spotifymate.com/mdelta.123tokyo.xyz/get.php/2/91/nyp_Tnbgfdo.
-mp3?cid=MmEwMTo0Zjg6YzAxMjozOWJlOjoxfE5BfERF&h=WH8FX1im9OjJQfXr4Weckw&s=16951869
-70&n=SpotifyMate.com%20-%20So%20Long%20-%20Steady%20Holiday&cid2=ODEuMTcxLjI5LjE
-2fE5MfFJJQUU3QzMwMTc5MkE4Mjgw&fn=1'
+  title: 'Teenage Blue',
+  artists: 'Dreamgirl',
+  image: 'https://i.scdn.co/image/ab67616d0000b27377cbc6b59d5190717afa04aa',
+  audioBuffer: <Buffer 49 44 33 03 00 00 00 0e 68 1c 54 49 54 32 00 00 00 1b 00 00 01 ff fe 54 00 65 00 65 00 6e 00 61 00 67 00 65 00 20 00 42 00 6c 00 75 00 65 00 41 50 49 ... 4003181 more bytes>
 }
 
 if url includes open.spotify.com || with query:
@@ -60,10 +56,7 @@ if url includes open.spotify.com || with query:
     releasedDate: '2015-02-14'
   },
   imageUrl: 'https://i.scdn.co/image/ab67616d0000b27377cbc6b59d5190717afa04aa',
-  downloadAudio: 'https://dl.spotifymate.com/mbeta.123tokyo.xyz/get.php/7/a1/JVD
-mY_riDsc.mp3?cid=MmEwMTo0Zjg6YzAxMjozOWJlOjoxfE5BfERF&h=vcJatNsMz0NedmZOLxFnWA&s
-=1695187304&n=SpotifyMate.com%20-%20Teenage%20Blue%20-%20Dreamgirl&cid2=ODEuMTcx
-LjI5LjE2fE5MfFJJQUU3QzMwMTc5MkE4Mjgw&fn=1'
+  audioBuffer: <Buffer 49 44 33 03 00 00 00 0e 68 1c 54 49 54 32 00 00 00 1b 00 00 01 ff fe 54 00 65 00 65 00 6e 00 61 00 67 00 65 00 20 00 42 00 6c 00 75 00 65 00 41 50 49 ... 3981865 more bytes>
 }
 
 }
