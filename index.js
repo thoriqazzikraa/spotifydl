@@ -2,7 +2,6 @@ const { isUrl, tags, convertMs } = require("./function");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const formData = require("form-data")
-const bodyForm = new formData()
 const spot = require("spotify-finder");
 const spotify = new spot({
   consumer: {
@@ -31,6 +30,7 @@ async function downloads(url) {
       return result
     }
     const dataValue = await getValue()
+    const bodyForm = new formData()
     bodyForm.append("url", url)
     bodyForm.append(dataValue.name, dataValue.value)
     const { data } = await axios("https://spotifymate.com/action", {
