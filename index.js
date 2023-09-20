@@ -67,7 +67,6 @@ async function search(query, limit) {
   return data.tracks;
 }
 
-downloadTrack("https://spotify.link/Mc70UUleeDb")
 async function downloadTrack(song) {
   let result = {}
   if (isUrl(song)) {
