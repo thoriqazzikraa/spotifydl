@@ -1,6 +1,8 @@
-const id3 = require("node-id3");
-const { ytmp3 } = require("@nechlophomeriaa/ytdl");
-const { isUrl, tags } = require("./function");
+const { isUrl, tags, convertMs } = require("./function");
+const axios = require("axios");
+const cheerio = require("cheerio");
+const formData = require("form-data")
+const bodyForm = new formData()
 const spot = require("spotify-finder");
 const spotify = new spot({
   consumer: {
@@ -8,101 +10,132 @@ const spotify = new spot({
     secret: "c009525564304209b7d8b705c28fd294",
   },
 });
-const { getTrack } = require("spottydl");
-const fetch = require("node-fetch");
+
+async function downloads(url) {
+  try {
+    const getValue = async () => {
+      const data = await axios.get("https://spotifymate.com/")
+      const $ = cheerio.load(data.data)
+      const name = $("#get_video > input[type=hidden]:nth-child(4)").attr("name")
+      const val = $("#get_video > input[type=hidden]:nth-child(4)").val()
+      const cookie = data.headers['set-cookie'][0].split(";")[0]
+      const result = {
+        cookie: cookie,
+        name: name,
+        value: val
+      }
+      return result
+    }
+    const dataValue = await getValue()
+    bodyForm.append("url", url)
+    bodyForm.append(dataValue.name, dataValue.value)
+    const { data } = await axios("https://spotifymate.com/action", {
+      method: "POST",
+      data: bodyForm,
+      headers: {
+        "cookie": dataValue.cookie
+      }
+    })
+    const $ = cheerio.load(data)
+    const result = {
+      status: true,
+      title: $("div.row > div > div:nth-child(1) > div:nth-child(2) > div > h3 > div").text(),
+      artists: $("div.row > div > div:nth-child(1) > div:nth-child(2) > p").text(),
+      image: $("div.row > div > div:nth-child(1) > div:nth-child(1) > img").attr("src"),
+      url: $("div.row > div > #download-block > div:nth-child(1) > a").attr("href")
+    }
+    return result
+  } catch (err) {
+    const result = {
+      status: false,
+      message: "Unknown error occurred.\n\n" + String(err)
+    }
+    console.log(result)
+    return result
+  }
+}
 
 async function search(query, limit) {
-  if (isUrl(query)) throw new Error("search function not support for url");
+  if (isUrl(query)) throw new Error("Search function not support for url");
   const limits = limit ? limit : 1;
   const data = await spotify.search({ q: query, type: "track", limit: limits });
   return data.tracks;
 }
 
 async function downloadTrack(song) {
+  let result = {}
   if (isUrl(song)) {
     try {
-      const tracks = await spotify.getTrack(
-        song.split("track/")[1].split("?")[0]
-      );
-      const tracks2 = await getTrack(song);
-      const bufferImage = await fetch(tracks.album.images[0].url).then((res) =>
-        res.buffer()
-      );
-      const audio = await ytmp3(`https://youtu.be/${tracks2.id}`);
-      const fetchAudio = await fetch(audio.url).then((res) => res.buffer());
-      let tagger = tags(
-        tracks2.title,
-        tracks2.artist,
-        tracks2.year,
-        tracks2.album,
-        bufferImage,
-        tracks2.trackNumber
-      );
-      const nodeID3 = await id3.write(tagger, fetchAudio);
-      const result = {
-        status: true,
-        title: tracks2.title,
-        artist: tracks2.artist,
-        uploadDate: tracks2.year,
-        album: tracks2.album,
-        size: audio.size,
-        duration: audio.duration,
-        thumbnail: tracks.album.images[0].url,
-        audioBuffer: nodeID3,
-      };
-      return result;
+      if (song.includes("spotify.link")) {
+        const tracks = await downloads(song)
+        return tracks
+      }
+      if (song.includes("open.spotify.com")) {
+        const tracks = await spotify.getTrack(song.split("track/")[1].split("?")[0])
+        const downloadData = await downloads(song)
+        result = {
+          status: true,
+          title: tracks.name,
+          artists: tracks.artists.map(art => art.name).join(", "),
+          duration: convertMs(tracks.duration_ms),
+          explicit: tracks.explicit,
+          popularity: tracks.popularity,
+          url: tracks.external_urls.spotify,
+          album: {
+            name: tracks.album.name,
+            type: tracks.album.album_type,
+            tracks: tracks.album.total_tracks,
+            releasedDate: tracks.album.release_date
+          },
+          imageUrl: downloadData.image,
+          downloadAudio: downloadData.url
+        }
+        return result
+      }
     } catch (err) {
-      const result = {
+      result = {
         status: false,
-        message: `Unknown error occurred\n\n${String(err)}`,
-      };
-      console.log(err);
-      return result;
-    }
-  } else {
-    try {
-      const findTracks = await search(song, 1);
-      const getTrackInfo = await getTrack(
-        findTracks.items[0].external_urls.spotify
-      );
-      const bufferImage = await fetch(
-        findTracks.items[0].album.images[0].url
-      ).then((res) => res.buffer());
-      const audio = await ytmp3(`https://youtu.be/${getTrackInfo.id}`);
-      const fetchAudio = await fetch(audio.url).then((res) => res.buffer());
-      const tagger = tags(
-        getTrackInfo.title,
-        getTrackInfo.artist,
-        getTrackInfo.year,
-        getTrackInfo.album,
-        bufferImage,
-        getTrackInfo.trackNumber
-      );
-      const nodeID3 = await id3.write(tagger, fetchAudio);
-      const result = {
-        status: true,
-        title: getTrackInfo.title,
-        artist: getTrackInfo.artist,
-        uploadDate: getTrackInfo.year,
-        album: getTrackInfo.album,
-        size: audio.size,
-        duration: audio.duration,
-        thumbnail: findTracks.items[0].album.images[0].url,
-        audioBuffer: nodeID3,
-      };
-      return result;
-    } catch (err) {
-      const result = {
-        status: false,
-        message: `Unknown error occurred\n\n${String(err)}`,
-      };
-      console.log(err);
-      return result;
+        statusCode: err.response.body.error.status,
+        message: err.response.body.error.message
+      }
+      console.log(result)
+      return result
+      }
+    } else {
+      try {
+        const searchTrack = await search(song, 1)
+        const downloadData = await downloads(searchTrack.items[0].external_urls.spotify)
+        result = {
+          status: true,
+          title: searchTrack.items[0].name,
+          artists: searchTrack.items[0].artists.map(art => art.name).join(", "),
+          duration: convertMs(searchTrack.items[0].duration_ms),
+          explicit: searchTrack.items[0].explicit,
+          popularity: searchTrack.items[0].popularity,
+          url: searchTrack.items[0].external_urls.spotify,
+          album: {
+            name: searchTrack.items[0].album.name,
+            type: searchTrack.items[0].album.album_type,
+            tracks: searchTrack.items[0].album.total_tracks,
+            releasedDate: searchTrack.items[0].album.release_date
+          },
+          imageUrl: downloadData.image,
+          downloadAudio: downloadData.url
+        }
+        return result
+      } catch (err) {
+        result = {
+          status: false,
+          message: "Unknown error occurred!"
+        }
+        console.log(result)
+        return result
+      }
     }
   }
-}
 
 module.exports = {
   search,
   downloadTrack,
+  downloads
 };
