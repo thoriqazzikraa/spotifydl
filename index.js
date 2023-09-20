@@ -1,87 +1,65 @@
 const { isUrl, tags, convertMs } = require("./function");
-const fetch = require("node-fetch");
 const axios = require("axios");
-const nodeID3 = require("node-id3");
 const cheerio = require("cheerio");
 const formData = require("form-data");
 const spot = require("spotify-finder");
 const spotify = new spot({
   consumer: {
-    key: "271f6e790fb943cdb34679a4adcc34cc",
-    secret: "c009525564304209b7d8b705c28fd294",
+    key: "9e1c5e192a8141c59b7e91f2848e6a9c",
+    secret: "78e2ece45fa446c98517d2cbb3271486",
   },
 });
 
+async function getOriginalUrl(url) {
+  const { data } = await axios.get(`https://api.allorigins.win/get?url=${url}`);
+  let $ = cheerio.load(data.contents);
+  return $(".secondary-action").attr("href");
+}
+
 async function downloads(url) {
-  try {
-    const getValue = async () => {
-      const data = await axios.get("https://spotifymate.com/", {
-        headers: {
-          "user-agent": "PostmanRuntime/7.32.2",
-        },
-      });
-      const $ = cheerio.load(data.data);
-      const name = $("#get_video > input[type=hidden]:nth-child(4)").attr(
-        "name"
-      );
-      const val = $("#get_video > input[type=hidden]:nth-child(4)").val();
-      const cookie = data.headers["set-cookie"][0].split(";")[0];
-      const result = {
-        cookie: cookie,
-        name: name,
-        value: val,
-      };
-      return result;
-    };
-    const dataValue = await getValue();
-    const bodyForm = new formData();
-    bodyForm.append("url", url);
-    bodyForm.append(dataValue.name, dataValue.value);
-    const { data } = await axios("https://spotifymate.com/action", {
-      method: "POST",
-      data: bodyForm,
-      headers: {
-        "user-agent": "PostmanRuntime/7.32.2",
-        cookie: dataValue.cookie,
-      },
-    });
-    let result = {};
-    const $ = cheerio.load(data);
-    const title = $(
-      "div.row > div > div:nth-child(1) > div:nth-child(2) > div > h3 > div"
-    ).text();
-    const artists = $(
-      "div.row > div > div:nth-child(1) > div:nth-child(2) > p"
-    ).text();
-    const thumb = $(
-      "div.row > div > div:nth-child(1) > div:nth-child(1) > img"
-    ).attr("src");
-    const urlAudio = $(
-      "div.row > div > #download-block > div:nth-child(1) > a"
-    ).attr("href");
-    const audioBuffer = await fetch(urlAudio).then(async (res) => res.buffer());
-    const imageThumb = await fetch(thumb).then(async (res) => res.buffer());
-    const id3 = await nodeID3.write(
+  if (!isUrl(url)) throw new Error("Please input Url");
+  if (url.includes("spotify.link")) {
+    const originalUrl = await getOriginalUrl(url);
+    const track = await axios.get(
+      `https://api.spotifydown.com/metadata/track/${
+        originalUrl.split("track/")[1].split("?")[0]
+      }`,
       {
-        title: title,
-        artists: artists,
-        image: { description: "Front cover", imageBuffer: imageThumb },
-      },
-      audioBuffer
+        headers: {
+          Origin: "https://spotifydown.com",
+          Referer: "https://spotifydown.com/",
+        },
+      }
     );
-    result = {
-      title: title,
-      artists: artists,
-      image: thumb,
-      audioBuffer: id3,
-    };
-    return result;
-  } catch (err) {
+    const { data } = await axios.get(
+      `https://api.spotifydown.com/download/${track.data.id}`,
+      {
+        headers: {
+          Origin: "https://spotifydown.com",
+          Referer: "https://spotifydown.com/",
+        },
+      }
+    );
+    return data;
+  } else if (url.includes("open.spotify.com")) {
+    const { data } = await axios.get(
+      `https://api.spotifydown.com/download/${
+        url.split("track/")[1].split("?")[0]
+      }`,
+      {
+        headers: {
+          Origin: "https://spotifydown.com",
+          Referer: "https://spotifydown.com/",
+        },
+      }
+    );
+    return data;
+  } else {
     const result = {
       status: false,
-      message: "Unknown error occurred.\n\n" + String(err),
+      message: "Please input valid spotify url",
     };
-    console.log(err);
+    console.log(result);
     return result;
   }
 }
@@ -98,38 +76,38 @@ async function downloadTrack(song) {
   if (isUrl(song)) {
     try {
       if (song.includes("spotify.link")) {
-        const tracks = await downloads(song);
-        return tracks;
-      }
-      if (song.includes("open.spotify.com")) {
-        const tracks = await spotify.getTrack(
+        const getOrigin = await getOriginalUrl(song);
+        var tracks = await spotify.getTrack(
+          getOrigin.split("track/")[1].split("?")[0]
+        );
+      } else {
+        var tracks = await spotify.getTrack(
           song.split("track/")[1].split("?")[0]
         );
-        const downloadData = await downloads(song);
-        result = {
-          status: true,
-          title: tracks.name,
-          artists: tracks.artists.map((art) => art.name).join(", "),
-          duration: convertMs(tracks.duration_ms),
-          explicit: tracks.explicit,
-          popularity: tracks.popularity,
-          url: tracks.external_urls.spotify,
-          album: {
-            name: tracks.album.name,
-            type: tracks.album.album_type,
-            tracks: tracks.album.total_tracks,
-            releasedDate: tracks.album.release_date,
-          },
-          imageUrl: downloadData.image,
-          audioBuffer: downloadData.audioBuffer,
-        };
-        return result;
       }
+      const downloadData = await downloads(song);
+      result = {
+        status: true,
+        title: tracks.name,
+        artists: tracks.artists.map((art) => art.name).join(", "),
+        duration: convertMs(tracks.duration_ms),
+        explicit: tracks.explicit,
+        popularity: tracks.popularity,
+        url: tracks.external_urls.spotify,
+        album: {
+          name: tracks.album.name,
+          type: tracks.album.album_type,
+          tracks: tracks.album.total_tracks,
+          releasedDate: tracks.album.release_date,
+        },
+        imageUrl: downloadData.metadata.cover,
+        audioUrl: downloadData.link,
+      };
+      return result;
     } catch (err) {
       result = {
         status: false,
-        statusCode: err.response.body.error.status,
-        message: err.response.body.error.message,
+        message: "Unknown error occurred!\n\n" + String(err),
       };
       console.log(result);
       return result;
@@ -154,14 +132,14 @@ async function downloadTrack(song) {
           tracks: searchTrack.items[0].album.total_tracks,
           releasedDate: searchTrack.items[0].album.release_date,
         },
-        imageUrl: downloadData.image,
-        audioBuffer: downloadData.audioBuffer,
+        imageUrl: downloadData.metadata.cover,
+        audioUrl: downloadData.link,
       };
       return result;
     } catch (err) {
       result = {
         status: false,
-        message: "Unknown error occurred!",
+        message: "Unknown error occurred!\n\n" + String(err),
       };
       console.log(result);
       return result;
@@ -170,6 +148,7 @@ async function downloadTrack(song) {
 }
 
 module.exports = {
+  getOriginalUrl,
   search,
   downloadTrack,
   downloads,

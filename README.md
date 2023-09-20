@@ -30,33 +30,22 @@ console.log(downTrack)
 /*
 Example Output: {
 
-if url includes https://spotify.link:
-
-{
-  title: 'Teenage Blue',
-  artists: 'Dreamgirl',
-  image: 'https://i.scdn.co/image/ab67616d0000b27377cbc6b59d5190717afa04aa',
-  audioBuffer: <Buffer 49 44 33 03 00 00 00 0e 68 1c 54 49 54 32 00 00 00 1b 00 00 01 ff fe 54 00 65 00 65 00 6e 00 61 00 67 00 65 00 20 00 42 00 6c 00 75 00 65 00 41 50 49 ... 4003181 more bytes>
-}
-
-if url includes open.spotify.com || with query:
-
 {
   status: true,
-  title: 'Teenage Blue',
-  artists: 'Dreamgirl',
-  duration: '00:03:54',
+  title: 'So Long',
+  artists: 'Steady Holiday',
+  duration: '00:03:40',
   explicit: false,
-  popularity: 62,
-  url: 'https://open.spotify.com/track/6oWXWkwHKREYlBNuBCitFP',
+  popularity: 33,
+  url: 'https://open.spotify.com/track/3yTE6ycnJ6lL3UsCsMJr3F',
   album: {
-    name: 'Illuminaughty',
-    type: 'single',
-    tracks: 6,
-    releasedDate: '2015-02-14'
+    name: 'Under the Influence',
+    type: 'album',
+    tracks: 9,
+    releasedDate: '2016-06-24'
   },
-  imageUrl: 'https://i.scdn.co/image/ab67616d0000b27377cbc6b59d5190717afa04aa',
-  audioBuffer: <Buffer 49 44 33 03 00 00 00 0e 68 1c 54 49 54 32 00 00 00 1b 00 00 01 ff fe 54 00 65 00 65 00 6e 00 61 00 67 00 65 00 20 00 42 00 6c 00 75 00 65 00 41 50 49 ... 3981865 more bytes>
+  imageUrl: 'https://i.scdn.co/image/ab67616d0000b273d52195651e47f1b443e90429',
+  audioUrl: 'https://dll2.yt2api.com/dl?hash=H3jL9yVyZ7o%2Fj5cvjF3TvUPxgCG3M%2BBmBb1l48iaZSeJKruXR6WSU1EVNH%2F86ygCQsl65F7AI1ZQZBm6GawY8m3ByLRxGYjFrdGhvx8AZYpdVyBMR3K8vP2ZcP%2FSxegGCUarfnq%2BQL%2FDhp0L6z2lZ5BgcKZy85Hp5WO%2B3dnnyjBJ61tn1B9nBxocGlbAigEm'
 }
 
 }
