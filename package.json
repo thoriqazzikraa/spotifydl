@@ -6,7 +6,7 @@
   },
   "name": "@nechlophomeriaa/spotifydl",
   "description": "Spotify Downloader with metadata using Node-ID3",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
