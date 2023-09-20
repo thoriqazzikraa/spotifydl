@@ -15,10 +15,8 @@ async function downloads(url) {
   try {
     const getValue = async () => {
       const data = await axios.get("https://spotifymate.com/", {
-        headers: {
-          "user-agent": "PostmanRuntime/7.32.2"
-        }
-      })
+	headers: {
+	
       const $ = cheerio.load(data.data)
       const name = $("#get_video > input[type=hidden]:nth-child(4)").attr("name")
       const val = $("#get_video > input[type=hidden]:nth-child(4)").val()
@@ -37,7 +35,6 @@ async function downloads(url) {
       method: "POST",
       data: bodyForm,
       headers: {
-        "user-agent": "PostmanRuntime/7.32.2",
         "cookie": dataValue.cookie
       }
     })
@@ -67,7 +64,6 @@ async function search(query, limit) {
   return data.tracks;
 }
 
-downloadTrack("https://spotify.link/Mc70UUleeDb")
 async function downloadTrack(song) {
   let result = {}
   if (isUrl(song)) {
