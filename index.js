@@ -1,9 +1,7 @@
 const { isUrl, tags, convertMs } = require("./function");
-const fetch = require("node-fetch");
-const nodeID3 = require("node-id3");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const formData = require("form-data");
+const userAgent = require("random-useragent");
 const spot = require("spotify-finder");
 const spotify = new spot({
   consumer: {
@@ -11,9 +9,22 @@ const spotify = new spot({
     secret: "78e2ece45fa446c98517d2cbb3271486",
   },
 });
+const options = {
+  headers: {
+    Origin: "https://spotifydown.com",
+    Referer: "https://spotifydown.com/",
+  },
+};
 
 async function getOriginalUrl(url) {
-  const { data } = await axios.get(`https://api.allorigins.win/get?url=${url}`);
+  const { data } = await axios.get(
+    `https://api.allorigins.win/get?url=${url}`,
+    {
+      headers: {
+        "User-Agent": userAgent.getRandom("Mozilla"),
+      },
+    }
+  );
   let $ = cheerio.load(data.contents);
   return $(".secondary-action").attr("href");
 }
@@ -26,21 +37,11 @@ async function downloads(url) {
       `https://api.spotifydown.com/metadata/track/${
         originalUrl.split("track/")[1].split("?")[0]
       }`,
-      {
-        headers: {
-          Origin: "https://spotifydown.com",
-          Referer: "https://spotifydown.com/",
-        },
-      }
+      options
     );
     const { data } = await axios.get(
       `https://api.spotifydown.com/download/${track.data.id}`,
-      {
-        headers: {
-          Origin: "https://spotifydown.com",
-          Referer: "https://spotifydown.com/",
-        },
-      }
+      options
     );
     return data;
   } else if (url.includes("open.spotify.com")) {
@@ -48,12 +49,7 @@ async function downloads(url) {
       `https://api.spotifydown.com/download/${
         url.split("track/")[1].split("?")[0]
       }`,
-      {
-        headers: {
-          Origin: "https://spotifydown.com",
-          Referer: "https://spotifydown.com/",
-        },
-      }
+      options
     );
     return data;
   } else {
@@ -73,6 +69,86 @@ async function search(query, limit) {
   return data.tracks;
 }
 
+async function downloadAlbum(url) {
+  let result = { type: null, metadata: {}, trackList: [] };
+  if (!isUrl(url)) throw new Error("Input Url");
+  try {
+    if (url.includes("spotify.link")) {
+      const getOrigin = await getOriginalUrl(url);
+      if (!getOrigin.includes("album/") && !getOrigin.includes("playlist/"))
+        throw new Error("Invalid album/playlist url");
+      if (getOrigin.includes("album/")) {
+        var inputData = "album/";
+      } else {
+        var inputData = "playlist/";
+      }
+      const metaData = await axios.get(
+        `https://api.spotifydown.com/metadata/${inputData}${
+          getOrigin.split(inputData)[1].split("?")[0]
+        }`,
+        options
+      );
+      result.type = inputData.split("/")[0];
+      result.metadata = metaData.data;
+      const { data } = await axios.get(
+        `https://api.spotifydown.com/trackList/${inputData}${
+          getOrigin.split(inputData)[1].split("?")[0]
+        }`,
+        options
+      );
+      console.log(`Downloading audio...`);
+      console.log(
+        "Please wait for a moment, this process will take for a couple minutes"
+      );
+      for (let i = 0; i < data.trackList.length; i++) {
+        const downloading = await downloads(
+          `https://open.spotify.com/track/${data.trackList[i].id}`
+        );
+        result.trackList.push(downloading);
+      }
+      return result;
+    } else if (url.includes("open.spotify.com")) {
+      if (!url.includes("album/") && !url.includes("playlist/"))
+        throw new Error("Invalid album/playlist url");
+      if (url.includes("album/")) {
+        var inputData = "album/";
+      } else {
+        var inputData = "playlist/";
+      }
+      const metaData = await axios.get(
+        `https://api.spotifydown.com/metadata/${inputData}${
+          url.split(inputData)[1].split("?")[0]
+        }`,
+        options
+      );
+      result.type = inputData.split("/")[0];
+      result.metadata = metaData.data;
+      const { data } = await axios.get(
+        `https://api.spotifydown.com/trackList/${inputData}${
+          url.split(inputData)[1].split("?")[0]
+        }`,
+        options
+      );
+      console.log("Downloading audio...");
+      console.log(
+        "Please wait for a moment, this process will take for a couple minutes"
+      );
+      for (let i = 0; i < data.trackList.length; i++) {
+        const downloading = await downloads(
+          `https://open.spotify.com/track/${data.trackList[i].id}`
+        );
+        result.trackList.push(downloading);
+      }
+      return result;
+    } else {
+      throw new Error("Invalid Url!");
+    }
+  } catch (err) {
+    console.log(err);
+    return String(err);
+  }
+}
+
 async function downloadTrack(song) {
   let result = {};
   if (isUrl(song)) {
@@ -88,21 +164,6 @@ async function downloadTrack(song) {
         );
       }
       const downloadData = await downloads(song);
-      const fetchAudio = await fetch(downloadData.link).then((res) =>
-        res.buffer()
-      );
-      const fetchImg = await fetch(tracks.album.images[0].url).then((res) =>
-        res.buffer()
-      );
-      const metadataAudio = tags(
-        tracks.name,
-        tracks.artists.map((art) => art.name).join(", "),
-        tracks.album.release_date,
-        tracks.album.name,
-        fetchImg,
-        tracks.track_number
-      );
-      const audioBuff = await nodeID3.write(metadataAudio, fetchAudio);
       result = {
         status: true,
         title: tracks.name,
@@ -118,7 +179,7 @@ async function downloadTrack(song) {
           releasedDate: tracks.album.release_date,
         },
         imageUrl: tracks.album.images[0].url,
-        audioBuffer: audioBuff,
+        audioUrl: downloadData.link,
       };
       return result;
     } catch (err) {
@@ -135,21 +196,6 @@ async function downloadTrack(song) {
       const downloadData = await downloads(
         searchTrack.items[0].external_urls.spotify
       );
-      const fetchAudio = await fetch(downloadData.link).then((res) =>
-        res.buffer()
-      );
-      const fetchImg = await fetch(
-        searchTrack.items[0].album.images[0].url
-      ).then((res) => res.buffer());
-      const metadataAudio = tags(
-        searchTrack.items[0].name,
-        searchTrack.items[0].artists.map((art) => art.name).join(", "),
-        searchTrack.items[0].album.release_date,
-        searchTrack.items[0].album.name,
-        fetchImg,
-        searchTrack.items[0].track_number
-      );
-      const audioBuff = await nodeID3.write(metadataAudio, fetchAudio);
       result = {
         status: true,
         title: searchTrack.items[0].name,
@@ -165,7 +211,7 @@ async function downloadTrack(song) {
           releasedDate: searchTrack.items[0].album.release_date,
         },
         imageUrl: downloadData.metadata.cover,
-        audioBuffer: audioBuff,
+        audioBuffer: downloadData.link,
       };
       return result;
     } catch (err) {
@@ -180,6 +226,7 @@ async function downloadTrack(song) {
 }
 
 module.exports = {
+  downloadAlbum,
   getOriginalUrl,
   search,
   downloadTrack,
