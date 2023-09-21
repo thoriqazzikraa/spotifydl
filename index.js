@@ -1,4 +1,6 @@
 const { isUrl, tags, convertMs } = require("./function");
+const fetch = require("node-fetch");
+const nodeID3 = require("node-id3");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const formData = require("form-data");
@@ -86,6 +88,21 @@ async function downloadTrack(song) {
         );
       }
       const downloadData = await downloads(song);
+      const fetchAudio = await fetch(downloadData.link).then((res) =>
+        res.buffer()
+      );
+      const fetchImg = await fetch(tracks.album.images[0].url).then((res) =>
+        res.buffer()
+      );
+      const metadataAudio = tags(
+        tracks.name,
+        tracks.artists.map((art) => art.name).join(", "),
+        tracks.album.release_date,
+        tracks.album.name,
+        fetchImg,
+        tracks.track_number
+      );
+      const audioBuff = await nodeID3.write(metadataAudio, fetchAudio);
       result = {
         status: true,
         title: tracks.name,
@@ -100,8 +117,8 @@ async function downloadTrack(song) {
           tracks: tracks.album.total_tracks,
           releasedDate: tracks.album.release_date,
         },
-        imageUrl: downloadData.metadata.cover,
-        audioUrl: downloadData.link,
+        imageUrl: tracks.album.images[0].url,
+        audioBuffer: audioBuff,
       };
       return result;
     } catch (err) {
@@ -118,6 +135,21 @@ async function downloadTrack(song) {
       const downloadData = await downloads(
         searchTrack.items[0].external_urls.spotify
       );
+      const fetchAudio = await fetch(downloadData.link).then((res) =>
+        res.buffer()
+      );
+      const fetchImg = await fetch(
+        searchTrack.items[0].album.images[0].url
+      ).then((res) => res.buffer());
+      const metadataAudio = tags(
+        searchTrack.items[0].name,
+        searchTrack.items[0].artists.map((art) => art.name).join(", "),
+        searchTrack.items[0].album.release_date,
+        searchTrack.items[0].album.name,
+        fetchImg,
+        searchTrack.items[0].track_number
+      );
+      const audioBuff = await nodeID3.write(metadataAudio, fetchAudio);
       result = {
         status: true,
         title: searchTrack.items[0].name,
@@ -133,7 +165,7 @@ async function downloadTrack(song) {
           releasedDate: searchTrack.items[0].album.release_date,
         },
         imageUrl: downloadData.metadata.cover,
-        audioUrl: downloadData.link,
+        audioBuffer: audioBuff,
       };
       return result;
     } catch (err) {

@@ -2,11 +2,13 @@
   "dependencies": {
     "axios": "^1.5.0",
     "cheerio": "^1.0.0-rc.12",
+    "node-fetch": "2.6.6",
+    "node-id3": "^0.2.6",
     "spotify-finder": "^2.1.1"
   },
   "name": "@nechlophomeriaa/spotifydl",
   "description": "Spotify Downloader with metadata using Node-ID3",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
