@@ -34,12 +34,12 @@ Example Output: {
 
 {
   status: true,
-  title: 'Teenage Blue',
+  title: 'Acid Wash Ocean',
   artists: 'Dreamgirl',
-  duration: '00:03:54',
+  duration: '00:02:13',
   explicit: false,
-  popularity: 61,
-  url: 'https://open.spotify.com/track/6oWXWkwHKREYlBNuBCitFP',
+  popularity: 37,
+  url: 'https://open.spotify.com/track/2D5QfU6vhWVCN5xKv5ZniT',
   album: {
     name: 'Illuminaughty',
     type: 'single',
@@ -47,7 +47,7 @@ Example Output: {
     releasedDate: '2015-02-14'
   },
   imageUrl: 'https://i.scdn.co/image/ab67616d0000b27377cbc6b59d5190717afa04aa',
-  audioBuffer: <Buffer 49 44 33 03 00 00 00 0e 69 03 54 49 54 32 00 00 00 1b 00 00 01 ff fe 54 00 65 00 65 00 6e 00 61 00 67 00 65 00 20 00 42 00 6c 00 75 00 65 00 54 50 45 ... 9644059 more bytes>
+  audioUrl: 'https://cdn---02---dl.ytapis.com/dl?hash=HDXr7hj8l0my%2BWkfR4ao6ujYcd7N61%2FATvLi368BTyZGUrsIPbz5tSKzhhi5rOVmqflg8ZGn5NsdCJKvvp9pksqGbizGN5xBwKWtuVu%2F2VMlgX5Bq1r93h%2BROgeVDishuDj9eRjDDOrJmO3yNUxadiZNEQyKLjO4rPI5%2FeonTvAn19aYB2o%2FpvmzviG%2FWz%2F9'
 }
 
 }
