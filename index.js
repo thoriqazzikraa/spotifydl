@@ -1,7 +1,7 @@
 const { isUrl, tags, convertMs } = require("./function");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const userAgent = require("random-useragent");
+const fetch = require("node-fetch")
 const spot = require("spotify-finder");
 const spotify = new spot({
   consumer: {
@@ -17,16 +17,8 @@ const options = {
 };
 
 async function getOriginalUrl(url) {
-  const { data } = await axios.get(
-    `https://api.allorigins.win/get?url=${url}`,
-    {
-      headers: {
-        "User-Agent": userAgent.getRandom("Mozilla"),
-      },
-    }
-  );
-  let $ = cheerio.load(data.contents);
-  return $(".secondary-action").attr("href");
+  const data = await fetch(url)
+  return data.url
 }
 
 async function downloads(url) {
