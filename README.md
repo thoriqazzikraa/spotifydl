@@ -1,6 +1,7 @@
 # Usage
 ```js
-const { search, downloadTrack, downloadAlbum, downloads, getOriginalUrl } = require("@nechlophomeriaa/spotifydl")`
+const { search, downloadTrack, downloadAlbum, downloads, getOriginalUrl } = require("@nechlophomeriaa/spotifydl")
+```
 
 ## Search Function
 ```js

@@ -1,7 +1,7 @@
 const { isUrl, tags, convertMs } = require("./function");
 const axios = require("axios");
 const cheerio = require("cheerio");
-const fetch = require("node-fetch")
+const fetch = require("node-fetch");
 const spot = require("spotify-finder");
 const spotify = new spot({
   consumer: {
@@ -17,8 +17,8 @@ const options = {
 };
 
 async function getOriginalUrl(url) {
-  const data = await fetch(url)
-  return data.url
+  const data = await fetch(url);
+  return data.url;
 }
 
 async function downloads(url) {
