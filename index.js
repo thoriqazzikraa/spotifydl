@@ -203,7 +203,7 @@ async function downloadTrack(song) {
           releasedDate: searchTrack.items[0].album.release_date,
         },
         imageUrl: downloadData.metadata.cover,
-        audioBuffer: downloadData.link,
+        audioUrl: downloadData.link,
       };
       return result;
     } catch (err) {
