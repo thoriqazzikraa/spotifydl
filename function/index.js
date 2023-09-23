@@ -1,9 +1,5 @@
 function isUrl(url) {
-  return url.match(
-    new RegExp(
-      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/gi
-    )
-  );
+  return url.match(new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)/gi))
 }
 
 function tags(title, artist, year, album, image, track) {
@@ -14,21 +10,21 @@ function tags(title, artist, year, album, image, track) {
     album: album,
     image: {
       description: "Front cover",
-      imageBuffer: image,
+      imageBuffer: image
     },
-    track: track,
-  };
-  return result;
+    track: track
+  }
+  return result
 }
 
 function convertMs(duration) {
-  seconds = parseInt((duration/1000)%60)
-  minutes = parseInt((duration/(1000*60))%60)
-  hours = parseInt((duration/(1000*60*60))%24);
-  hours = (hours < 10) ? "0" + hours : hours;
-  minutes = (minutes < 10) ? "0" + minutes : minutes;
-  seconds = (seconds < 10) ? "0" + seconds : seconds;
-  return hours + ":" + minutes + ":" + seconds;
+  seconds = parseInt((duration / 1000) % 60)
+  minutes = parseInt((duration / (1000 * 60)) % 60)
+  hours = parseInt((duration / (1000 * 60 * 60)) % 24)
+  hours = hours < 10 ? "0" + hours : hours
+  minutes = minutes < 10 ? "0" + minutes : minutes
+  seconds = seconds < 10 ? "0" + seconds : seconds
+  return hours + ":" + minutes + ":" + seconds
 }
 
-module.exports = { isUrl, tags, convertMs };
+module.exports = { isUrl, tags, convertMs }

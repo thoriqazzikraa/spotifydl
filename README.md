@@ -1,15 +1,25 @@
-# Usage
+<p>Simple Scraper Spotify Downloader from <a href ="https://spotifydown.com/id">SpotifyDown</a></p>
+
+## Installation
+
+```sh
+> npm i @nechlophomeriaa/spotifydl
+```
+
+## Usage
+
 ```js
 const { search, downloadTrack, downloadAlbum, downloads, getOriginalUrl } = require("@nechlophomeriaa/spotifydl")
 ```
 
 ## Search Function
+
 ```js
-(async () => {
-const searchTrack = await search(query, limit) //
-console.log(searchTrack)
-// Promise will be return an Array
-})
+;async () => {
+  const searchTrack = await search(query, limit) //
+  console.log(searchTrack)
+  // Promise will be return an Array
+}
 
 /*
 Example: {
@@ -24,12 +34,13 @@ console.log(searchTrack)
 ```
 
 ## Download Single Track Function
+
 ```js
 // Input Metadata: ✅
-(async () => {
-const downTrack = await downloadTrack(song) // query || url
-console.log(downTrack)
-})
+;async () => {
+  const downTrack = await downloadTrack(song) // query || url
+  console.log(downTrack)
+}
 /*
 Example Output: {
 
@@ -56,13 +67,14 @@ Example Output: {
 ```
 
 ## Download Albums Function
+
 ```js
 // Supports: Album/Playlist
 // Input Metadata: ✅
-(async () => {
-const downAlbums = await downloadAlbum(url)
-console.log(downAlbums)
-})
+;async () => {
+  const downAlbums = await downloadAlbum(url)
+  console.log(downAlbums)
+}
 /*
 Example Output: {
 
@@ -109,6 +121,4 @@ Example Output: {
 */
 ```
 
-If there is bug/error please make an issue!
-
-
+<p align="center">If there is bug/error please make an issue!</p>

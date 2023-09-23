@@ -6,11 +6,13 @@
     "spotify-finder": "^2.1.1"
   },
   "name": "@nechlophomeriaa/spotifydl",
-  "description": "Spotify Downloader with metadata using Node-ID3",
-  "version": "1.0.7",
+  "description": "Simple Scraper Spotify Track/Album/Playlist Downloader with Metadata",
+  "version": "1.0.8",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "format": "prettier --write '**/*.{md,js,json}'"
   },
   "repository": {
     "type": "git",
