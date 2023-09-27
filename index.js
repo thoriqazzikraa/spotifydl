@@ -104,6 +104,11 @@ async function downloadTrack(song) {
     try {
       if (song.includes("spotify.link")) {
         const getOrigin = await getOriginalUrl(song)
+        if (!getOrigin.includes("track/")) {
+          ;(result.status = false), (result.message = "Download track not support for Album/Playlist")
+          console.log(result)
+          return result
+        }
         var tracks = await spotify.getTrack(getOrigin.split("track/")[1].split("?")[0])
       } else {
         var tracks = await spotify.getTrack(song.split("track/")[1].split("?")[0])
@@ -132,7 +137,7 @@ async function downloadTrack(song) {
         status: false,
         message: "Unknown error occurred!\n\n" + String(err)
       }
-      console.log(result)
+      console.log(err)
       return result
     }
   } else {

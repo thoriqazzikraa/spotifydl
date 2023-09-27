@@ -15,11 +15,11 @@ const { search, downloadTrack, downloadAlbum, downloads, getOriginalUrl } = requ
 ## Search Function
 
 ```js
-;async () => {
+(async () => {
   const searchTrack = await search(query, limit) //
   console.log(searchTrack)
   // Promise will be return an Array
-}
+})
 
 /*
 Example: {
@@ -37,10 +37,10 @@ console.log(searchTrack)
 
 ```js
 // Input Metadata: ✅
-;async () => {
+(async () => {
   const downTrack = await downloadTrack(song) // query || url
   console.log(downTrack)
-}
+})
 /*
 Example Output: {
 
@@ -71,10 +71,10 @@ Example Output: {
 ```js
 // Supports: Album/Playlist
 // Input Metadata: ✅
-;async () => {
+(async () => {
   const downAlbums = await downloadAlbum(url)
   console.log(downAlbums)
-}
+})
 /*
 Example Output: {
 

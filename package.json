@@ -7,12 +7,12 @@
   },
   "name": "@nechlophomeriaa/spotifydl",
   "description": "Simple Scraper Spotify Track/Album/Playlist Downloader with Metadata",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "format": "prettier --write '**/*.{md,js,json}'"
+    "format": "prettier --write '**/*.{js,json}'"
   },
   "repository": {
     "type": "git",
