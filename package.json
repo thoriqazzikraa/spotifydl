@@ -9,7 +9,7 @@
   },
   "name": "@nechlophomeriaa/spotifydl",
   "description": "Simple Scraper Spotify Track/Album/Playlist Downloader with Metadata",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
