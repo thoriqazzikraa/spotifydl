@@ -3,7 +3,7 @@ const nodeID3 = require("node-id3")
 const axios = require("axios")
 const cheerio = require("cheerio")
 const fetch = require("node-fetch")
-const spot = require("spotify-finder")
+const spot = require("@nechlophomeriaa/spotify-finder")
 const spotify = new spot({
   consumer: {
     key: "9e1c5e192a8141c59b7e91f2848e6a9c",
