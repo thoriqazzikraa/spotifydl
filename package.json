@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@nechlophomeriaa/spotify-finder": "^1.0.0",
+    "@nechlophomeriaa/spotify-finder": "^1.0.3",
     "axios": "^1.5.0",
     "cheerio": "^1.0.0-rc.12",
     "node-fetch": "2.6.6",
@@ -9,7 +9,7 @@
   },
   "name": "@nechlophomeriaa/spotifydl",
   "description": "Simple Scraper Spotify Track/Album/Playlist Downloader with Metadata",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

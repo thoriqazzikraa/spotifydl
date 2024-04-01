@@ -22,6 +22,25 @@ async function getOriginalUrl(url) {
   return data.url
 }
 
+async function downloads2(url) {
+  if (!isUrl(url)) throw new Error("Please input URL")
+  if (url.includes("spotify.link")) {
+    const originalUrl = await getOriginalUrl(url)
+    const track = await fetch(`https://spotifydownloaders.com/api/getSpotifyDetails?url=${url}`).then((res) => res.buffer())
+    return track
+  } else if (url.includes("open.spotify.com")) {
+    const track = await fetch(`https://spotifydownloaders.com/api/getSpotifyDetails?url=${url}`).then((res) => res.buffer())
+    return track
+  } else {
+    const result = {
+      status: false,
+      message: "Please input valid spotify url"
+    }
+    console.log(result)
+    return result
+  }
+}
+
 async function downloads(url) {
   if (!isUrl(url)) throw new Error("Please input Url")
   if (url.includes("spotify.link")) {
@@ -65,6 +84,52 @@ async function search(query, limit) {
   const limits = limit ? limit : 1
   const data = await spotify.search({ q: query, type: "track", limit: limits })
   return data.tracks
+}
+
+async function downloadAlbum2(url) {
+  let result = {}
+  if (!isUrl(url)) throw new Error("Please input an url")
+  try {
+    if (url.includes("spotify.link")) {
+      var urll = await getOriginalUrl(url)
+    } else if (url.includes("open.spotify.com")) {
+      var urll = url
+    } else {
+      throw new Error("Invalid Url!")
+    }
+    if (!urll.includes("album/") && !urll.includes("playlist/")) throw new Error("Invalid album/playlist url")
+    if (urll.includes("album/")) {
+      var inputData = "album"
+    } else {
+      var inputData = "playlist"
+    }
+    const metadata = await spotify.getAlbum(urll)
+    result = {
+      type: inputData,
+      metadata: {
+        title: metadata.name,
+        artists: metadata.owner.display_name,
+        cover: metadata.images[0].url,
+        releaseDate: metadata.release_date ? null : metadata.release_date
+      },
+      trackList: []
+    }
+    const trackDetails = await axios.get(`https://spotifydownloaders.com/api/getSpotifyDetails?url=${urll}`).then((res) => res.data)
+    console.log(`Downloading audio...`)
+    console.log("Please wait for a moment, this process will take for a couple minutes")
+    for (let i = 0; i < trackDetails.tracks.length; i++) {
+      const audioMp3 = await downloads2(`https://open.spotify.com/track/${trackDetails.tracks[i].uri.split("track:")[1]}`)
+      result.trackList.push({
+        success: true,
+        metadata: trackDetails.tracks[i],
+        audioBuffer: audioMp3
+      })
+    }
+    return result
+  } catch (err) {
+    console.log(err)
+    return String(err)
+  }
 }
 
 async function downloadAlbum(url) {
@@ -114,6 +179,85 @@ async function downloadAlbum(url) {
   } catch (err) {
     console.log(err)
     return String(err)
+  }
+}
+
+async function downloadTrack2(song) {
+  let result = {}
+  if (isUrl(song)) {
+    try {
+      if (song.includes("spotify.link")) {
+        const dataSong = await getOriginalUrl(song)
+        if (!dataSong.includes("track")) {
+          ;(result.status = false), (result.message = "Download track not support for Album/Playlist")
+          console.log(result)
+          return result
+        }
+        var tracks = await spotify.getTrack(dataSong.split("track/")[1].split("?")[0])
+      } else if (song.includes("open.spotify.com")) {
+        var tracks = await spotify.getTrack(song.split("track/")[1].split("?")[0])
+      } else {
+        throw new Error("Invalid Url!")
+      }
+      const downloadData = await downloads2(song)
+      result = {
+        status: true,
+        title: tracks.name,
+        artists: tracks.artists.map((art) => art.name).join(", "),
+        duration: convertMs(tracks.duration_ms),
+        duration_ms: tracks.duration_ms,
+        explicit: tracks.explicit,
+        popularity: tracks.popularity,
+        url: tracks.external_urls.spotify,
+        album: {
+          name: tracks.album.name,
+          type: tracks.album.album_type,
+          tracks: tracks.album.total_tracks,
+          releasedDate: tracks.album.release_date
+        },
+        imageUrl: tracks.album.images[0].url,
+        audioBuffer: downloadData
+      }
+      return result
+    } catch (err) {
+      result = {
+        status: false,
+        message: "Unknown error occurred!\n\n" + String(err)
+      }
+      console.log(err)
+      return result
+    }
+  } else {
+    try {
+      const searchTrack = await search(song, 1)
+      const downloadData = await downloads2(searchTrack.items[0].external_urls.spotify)
+      result = {
+        status: true,
+        title: searchTrack.items[0].name,
+        artists: searchTrack.items[0].artists.map((art) => art.name).join(", "),
+        duration: convertMs(searchTrack.items[0].duration_ms),
+        duration_ms: searchTrack.items[0].duration_ms,
+        explicit: searchTrack.items[0].explicit,
+        popularity: searchTrack.items[0].popularity,
+        url: searchTrack.items[0].external_urls.spotify,
+        album: {
+          name: searchTrack.items[0].album.name,
+          type: searchTrack.items[0].album.album_type,
+          tracks: searchTrack.items[0].album.total_tracks,
+          releasedDate: searchTrack.items[0].album.release_date
+        },
+        imageUrl: searchTrack.items[0].album.images[0].url,
+        audioBuffer: downloadData
+      }
+      return result
+    } catch (err) {
+      result = {
+        status: false,
+        message: "Unknown error occurred!\n\n" + String(err)
+      }
+      console.log(result)
+      return result
+    }
   }
 }
 
@@ -195,9 +339,12 @@ async function downloadTrack(song) {
 }
 
 module.exports = {
-  downloadAlbum,
   getOriginalUrl,
   search,
+  downloads,
+  downloads2,
+  downloadAlbum,
+  downloadAlbum2,
   downloadTrack,
-  downloads
+  downloadTrack2
 }

@@ -9,7 +9,16 @@
 ## Usage
 
 ```js
-const { search, downloadTrack, downloadAlbum } = require("@nechlophomeriaa/spotifydl")
+const {
+  getOriginalUrl,
+  search,
+  downloads,
+  downloads2,
+  downloadAlbum,
+  downloadAlbum2,
+  downloadTrack,
+  downloadTrack2
+  } = require("@nechlophomeriaa/spotifydl")
 ```
 
 ## Search Function
