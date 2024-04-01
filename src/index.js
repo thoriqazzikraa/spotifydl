@@ -26,10 +26,10 @@ async function downloads2(url) {
   if (!isUrl(url)) throw new Error("Please input URL")
   if (url.includes("spotify.link")) {
     const originalUrl = await getOriginalUrl(url)
-    const track = await fetch(`https://spotifydownloaders.com/api/getSpotifyDetails?url=${url}`).then((res) => res.buffer())
+    const track = await fetch(`https://spotifydownloaders.com/api/spotify?url=${url}`).then((res) => res.buffer())
     return track
   } else if (url.includes("open.spotify.com")) {
-    const track = await fetch(`https://spotifydownloaders.com/api/getSpotifyDetails?url=${url}`).then((res) => res.buffer())
+    const track = await fetch(`https://spotifydownloaders.com/api/spotify?url=${url}`).then((res) => res.buffer())
     return track
   } else {
     const result = {
