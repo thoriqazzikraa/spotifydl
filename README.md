@@ -1,4 +1,4 @@
-<p>Simple Scraper Spotify Downloader from <a href ="https://spotifydown.com/id">SpotifyDown</a></p>
+<p>Simple Scraper Spotify Downloader from online website</p>
 
 ## Installation
 
@@ -13,11 +13,8 @@
 const {
   getOriginalUrl,
   search,
-  downloads,
   downloads2,
-  downloadAlbum,
   downloadAlbum2,
-  downloadTrack,
   downloadTrack2
   } = require("@nechlophomeriaa/spotifydl")
 ```
@@ -27,11 +24,8 @@ const {
 import { 
   getOriginalUrl,
   search,
-  downloads,
   downloads2,
-  downloadAlbum,
   downloadAlbum2,
-  downloadTrack,
   downloadTrack2
 } from "@nechlophomeriaa/spotifydl"
 ```
@@ -62,7 +56,7 @@ console.log(searchTrack)
 ```js
 // Input Metadata: ✅
 (async () => {
-  const downTrack = await downloadTrack(song) // query || url
+  const downTrack = await downloadTrack2(song) // query || url
   console.log(downTrack)
 })
 /*
@@ -96,11 +90,11 @@ Example Output: {
 // Supports: Album/Playlist
 // Input Metadata: ✅
 (async () => {
-  const downAlbums = await downloadAlbum(url)
+  const downAlbums = await downloadAlbum2(url)
   console.log(downAlbums)
 })
 /*
-Example Output: {
+Example output: {
 
 {
   type: 'album',
