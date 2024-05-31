@@ -1,4 +1,4 @@
-const { isUrl, tags2, tags, convertMs } = require("../function")
+const { isUrl, tags2, tags, convertMs } = require("../function/index.js")
 const nodeID3 = require("node-id3")
 const axios = require("axios")
 const cheerio = require("cheerio")
