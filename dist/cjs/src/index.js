@@ -155,8 +155,8 @@ async function downloadAlbum2(url) {
     }
     const metadata = await spotify.getAlbum(urll)
     if (inputData === "album") {
-      var inputArtists = metadata.artists.map((s) => s.name)
-      inputArtists.join(", ")
+      var inputArt = metadata.artists.map((s) => s.name)
+      var inputArtists = inputArt.join(", ")
     }
     if (inputData === "playlist") {
       var inputArtists = metadata.owner.display_name
@@ -167,7 +167,7 @@ async function downloadAlbum2(url) {
         title: metadata.name,
         artists: inputArtists,
         cover: metadata.images[0].url,
-        releaseDate: metadata.release_date ? null : metadata.release_date
+        releaseDate: metadata.release_date ? metadata.release_date : undefined
       },
       trackList: []
     }
