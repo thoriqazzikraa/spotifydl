@@ -9,6 +9,7 @@
 ## Usage
 
 ```js
+// CommonJS
 const {
   getOriginalUrl,
   search,
@@ -19,6 +20,20 @@ const {
   downloadTrack,
   downloadTrack2
   } = require("@nechlophomeriaa/spotifydl")
+```
+
+```js
+// ESM
+import { 
+  getOriginalUrl,
+  search,
+  downloads,
+  downloads2,
+  downloadAlbum,
+  downloadAlbum2,
+  downloadTrack,
+  downloadTrack2
+} from "@nechlophomeriaa/spotifydl"
 ```
 
 ## Search Function

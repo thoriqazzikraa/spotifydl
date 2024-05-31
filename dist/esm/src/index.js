@@ -22,6 +22,11 @@ async function getOriginalUrl(url) {
   return data.url
 }
 
+/**
+ * Downloader function version 2
+ * @param { String } url
+ * @returns { Promise }
+ */
 async function downloads2(url) {
   if (!isUrl(url)) throw new Error("Please input URL")
   if (url.includes("spotify.link")) {
@@ -41,6 +46,11 @@ async function downloads2(url) {
   }
 }
 
+/**
+ * Downloader function version 1 
+ * @param { String } url
+ * @returns { Promise }
+ */
 async function downloads(url) {
   if (!isUrl(url)) throw new Error("Please input Url")
   if (url.includes("spotify.link")) {
@@ -79,6 +89,12 @@ async function downloads(url) {
   }
 }
 
+/**
+ * Search track in spotify api
+ * @param { String } query
+ * @param { Number } limit
+ * @returns { Promise }
+ */
 async function search(query, limit) {
   if (isUrl(query)) throw new Error("Search function not support for url")
   const limits = limit ? limit : 1
@@ -86,6 +102,12 @@ async function search(query, limit) {
   return data.tracks
 }
 
+/**
+ * Function for downloader album or playlist using url version 2
+ * With metadata
+ * @param { String } url
+ * @returns { Promise }
+ */
 async function downloadAlbum2(url) {
   let result = {}
   if (!isUrl(url)) throw new Error("Please input an url")
@@ -132,6 +154,12 @@ async function downloadAlbum2(url) {
   }
 }
 
+/**
+ * Function for downloader album or playlist using url version 1
+ * With metadata
+ * @param { String } url
+ * @returns { Promise }
+ */
 async function downloadAlbum(url) {
   let result = { type: null, metadata: {}, trackList: [] }
   if (!isUrl(url)) throw new Error("Input Url")
@@ -182,6 +210,12 @@ async function downloadAlbum(url) {
   }
 }
 
+/**
+ * Function for downloading track using query or url version 2
+ * With metadata
+ * @param { String } song
+ * @returns { Promise }
+ */
 async function downloadTrack2(song) {
   let result = {}
   if (isUrl(song)) {
@@ -261,6 +295,12 @@ async function downloadTrack2(song) {
   }
 }
 
+/**
+ * Function for downloading track using query or url version 1
+ * With metadata
+ * @param { String } song
+ * @returns { Promise }
+ */
 async function downloadTrack(song) {
   let result = {}
   if (isUrl(song)) {
