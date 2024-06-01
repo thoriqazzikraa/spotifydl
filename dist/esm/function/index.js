@@ -32,9 +32,9 @@ export function tags(title, artist, year, album, image, track) {
 }
 
 export function convertMs(duration) {
-  seconds = parseInt((duration / 1000) % 60)
-  minutes = parseInt((duration / (1000 * 60)) % 60)
-  hours = parseInt((duration / (1000 * 60 * 60)) % 24)
+  var seconds = parseInt((duration / 1000) % 60)
+  var minutes = parseInt((duration / (1000 * 60)) % 60)
+  var hours = parseInt((duration / (1000 * 60 * 60)) % 24)
   hours = hours < 10 ? "0" + hours : hours
   minutes = minutes < 10 ? "0" + minutes : minutes
   seconds = seconds < 10 ? "0" + seconds : seconds

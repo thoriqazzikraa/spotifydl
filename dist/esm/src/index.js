@@ -347,7 +347,7 @@ async function downloadTrack2(song) {
         status: false,
         message: "Unknown error occurred!\n\n" + String(err)
       }
-      console.log(result)
+      console.log(err)
       return result
     }
   }
