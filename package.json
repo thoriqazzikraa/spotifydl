@@ -11,7 +11,7 @@
   "description": "Simple Scraper Spotify Track/Album/Playlist Downloader with Metadata",
   "version": "1.0.20",
   "main": "./dist/cjs/index.js",
-  "type": "commonjs",
+  "module": "./dist/esm/src/index.js",
   "exports": {
     ".": {
       "import": "./dist/esm/src/index.js",
