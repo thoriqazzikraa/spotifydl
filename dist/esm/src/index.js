@@ -1,4 +1,4 @@
-import { isUrl, tags2, tags, convertMs } from "./function/index.js"
+import { isUrl, tags2, tags, convertMs } from "../function/index.js"
 import nodeID3 from "node-id3"
 import axios from "axios"
 import cheerio from "cheerio"

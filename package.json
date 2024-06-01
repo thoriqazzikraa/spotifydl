@@ -12,6 +12,7 @@
   "version": "1.0.21",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/src/index.js",
+  "type": "module",
   "exports": {
     ".": {
       "import": "./dist/esm/src/index.js",
