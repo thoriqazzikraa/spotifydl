@@ -1,9 +1,12 @@
-const { getOriginalUrl, search, downloads2, downloadAlbum2, downloadTrack2 } = require("./src/index.js")
+const { getOriginalUrl, search, downloads, downloads2, downloadAlbum, downloadAlbum2, downloadTrack, downloadTrack2 } = require("./src/index.js")
 
 module.exports = {
   getOriginalUrl,
   search,
+  downloads,
   downloads2,
+  downloadAlbum,
   downloadAlbum2,
+  downloadTrack,
   downloadTrack2
 }

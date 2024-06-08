@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-> npm i @nechlophomeriaa/spotifydl
+> npm i @nechlophomeriaa/spotifydl@latest
 ```
 
 ## Usage
@@ -13,8 +13,11 @@
 const {
   getOriginalUrl,
   search,
+  downloads,
   downloads2,
+  downloadAlbum,
   downloadAlbum2,
+  downloadTrack,
   downloadTrack2
   } = require("@nechlophomeriaa/spotifydl")
 ```
@@ -24,8 +27,11 @@ const {
 import { 
   getOriginalUrl,
   search,
+  downloads,
   downloads2,
+  downloadAlbum,
   downloadAlbum2,
+  downloadTrack,
   downloadTrack2
 } from "@nechlophomeriaa/spotifydl"
 ```
