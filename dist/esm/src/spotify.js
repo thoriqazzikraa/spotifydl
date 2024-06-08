@@ -21,16 +21,7 @@ async function getOriginalUrl(url) {
   const data = await fetch(url)
   return data.url
 }
-/**
- * @typedef { import("./@types/config.d.ts").albumResultV2 } resultAlbumV2
- * @typedef { import("./@types/config.d.ts").trackResultV2 } resultTrackV2
- */
 
-/**
- * Downloader function version 2
- * @param { String } url
- * @returns { Promise<Buffer> }
- */
 async function downloads2(url) {
   if (!isUrl(url)) throw new Error("Please input URL")
   if (url.includes("spotify.link")) {
@@ -50,10 +41,6 @@ async function downloads2(url) {
   }
 }
 
-/*
- * Downloader function version 1
- * @param { String } url
- * @returns { Promise }
 async function downloads(url) {
   if (!isUrl(url)) throw new Error("Please input Url");
   if (url.includes("spotify.link")) {
@@ -115,7 +102,7 @@ async function downloads(url) {
     console.log(result);
     return result;
   }
-}*/
+}
 
 /**
  * Search track in spotify api
@@ -130,11 +117,6 @@ async function search(query, limit) {
   return data.tracks
 }
 
-/**
- * Function for downloader album or playlist using url version 2
- * @param { String } url
- * @returns { Promise<resultAlbumV2>}
- */
 async function downloadAlbum2(url) {
   let result = {}
   if (!isUrl(url)) throw new Error("Please input an url")
@@ -188,7 +170,6 @@ async function downloadAlbum2(url) {
   }
 }
 
-/*
 async function downloadAlbum(url) {
   let result = { type: null, metadata: {}, trackList: [] };
   if (!isUrl(url)) throw new Error("Input Url");
@@ -267,13 +248,8 @@ async function downloadAlbum(url) {
     console.log(err);
     return String(err);
   }
-}*/
+}
 
-/**
- * Function for downloading track using query or url version 2
- * @param { String } song
- * @returns { Promise<resultTrackV2> }
- */
 async function downloadTrack2(song) {
   let result = {}
   if (isUrl(song)) {
@@ -353,7 +329,6 @@ async function downloadTrack2(song) {
   }
 }
 
-/*
 async function downloadTrack(song) {
   let result = {};
   if (isUrl(song)) {
@@ -436,6 +411,6 @@ async function downloadTrack(song) {
       return result;
     }
   }
-}*/
+}
 
-export { getOriginalUrl, search, downloads2, downloadAlbum2, downloadTrack2 }
+export { getOriginalUrl, search, downloads, downloads2, downloadAlbum, downloadAlbum2, downloadTrack, downloadTrack2 }
