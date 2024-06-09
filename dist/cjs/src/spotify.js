@@ -6,8 +6,8 @@ const fetch = require("node-fetch")
 const spot = require("@nechlophomeriaa/spotify-finder")
 const spotify = new spot({
   consumer: {
-    key: "9e1c5e192a8141c59b7e91f2848e6a9c",
-    secret: "78e2ece45fa446c98517d2cbb3271486"
+    key: "270eef8d162d4444a63e3a67227396ac",
+    secret: "4d198cd0de064e158e5e9d9028325fd3"
   }
 })
 const options = {
