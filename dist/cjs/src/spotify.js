@@ -6,8 +6,8 @@ const fetch = require("node-fetch")
 const spot = require("@nechlophomeriaa/spotify-finder")
 const spotify = new spot({
   consumer: {
-    key: "270eef8d162d4444a63e3a67227396ac",
-    secret: "4d198cd0de064e158e5e9d9028325fd3"
+    key: "d76e16244bb14150ababcfa7145bd278",
+    secret: "13e2931fd8754722a5e8b7d140787eb0"
   }
 })
 
@@ -21,6 +21,8 @@ const options = {
 
 const options2 = {
   headers: {
+    Referer: "https:/spotifydownloaders.com/",
+    "if-none-match": "r72zw3bevk1du",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
   }
 }
