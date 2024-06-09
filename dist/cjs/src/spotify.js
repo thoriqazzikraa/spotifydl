@@ -10,10 +10,18 @@ const spotify = new spot({
     secret: "4d198cd0de064e158e5e9d9028325fd3"
   }
 })
+
 const options = {
   headers: {
     Origin: "https://spotifydown.com",
-    Referer: "https://spotifydown.com/"
+    Referer: "https://spotifydown.com/",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+  }
+}
+
+const options2 = {
+  headers: {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
   }
 }
 
@@ -31,10 +39,10 @@ async function downloads2(url) {
   if (!isUrl(url)) throw new Error("Please input URL")
   if (url.includes("spotify.link")) {
     const originalUrl = await getOriginalUrl(url)
-    const track = await fetch(`https://spotifydownloaders.com/api/spotify?url=${url}`).then((res) => res.buffer())
+    const track = await fetch(`https://spotifydownloaders.com/api/spotify?url=${url}`, options2).then((res) => res.buffer())
     return track
   } else if (url.includes("open.spotify.com")) {
-    const track = await fetch(`https://spotifydownloaders.com/api/spotify?url=${url}`).then((res) => res.buffer())
+    const track = await fetch(`https://spotifydownloaders.com/api/spotify?url=${url}`, options2).then((res) => res.buffer())
     return track
   } else {
     const result = {
@@ -126,7 +134,7 @@ async function downloadAlbum2(url) {
       },
       trackList: []
     }
-    const trackDetails = await axios.get(`https://spotifydownloaders.com/api/getSpotifyDetails?url=${urll}`).then((res) => res.data)
+    const trackDetails = await axios.get(`https://spotifydownloaders.com/api/getSpotifyDetails?url=${urll}`, options2).then((res) => res.data)
     console.log(`Downloading audio...`)
     console.log("Please wait for a moment, this process will take for a couple minutes")
     for (let i = 0; i < trackDetails.tracks.length; i++) {
