@@ -9,20 +9,20 @@
   },
   "name": "@nechlophomeriaa/spotifydl",
   "description": "Simple Scraper Spotify Track/Album/Playlist Downloader with Metadata",
-  "version": "1.0.29",
+  "version": "1.0.30",
   "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/src/index.js",
+  "module": "./dist/esm/index.js",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/esm/src/index.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     }
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "format": "prettier --write '**/*.{js,json}'"
+    "format": "prettier --write '**/*.{js,json,ts}'"
   },
   "repository": {
     "type": "git",

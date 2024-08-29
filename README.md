@@ -15,10 +15,13 @@ const {
   search,
   downloads,
   downloads2,
+  downloads3,
   downloadAlbum,
   downloadAlbum2,
+  downloadAlbum3,
   downloadTrack,
-  downloadTrack2
+  downloadTrack2,
+  downloadTrack3
   } = require("@nechlophomeriaa/spotifydl")
 ```
 
@@ -29,10 +32,13 @@ import {
   search,
   downloads,
   downloads2,
+  downloads3,
   downloadAlbum,
   downloadAlbum2,
+  downloadAlbum3,
   downloadTrack,
-  downloadTrack2
+  downloadTrack2,
+  downloadTrack3
 } from "@nechlophomeriaa/spotifydl"
 ```
 
